@@ -6,6 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity // Indica que esta clase es una entidad JPA
 @Table(name = "empleados") // Especifica el nombre de la tabla en la base de datos
@@ -33,6 +36,11 @@ public class Empleado {
         return id;
     }
 
+    //Decoradores de validación para el campo nombre
+    // Estos decoradores se usan para validar los datos antes de guardarlos en la base de datos
+    @NotBlank(message = "El nombre no puede estar vacío")
+    @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "El nombre solo puede contener letras y espacios")
     public String getNombre() {
         return nombre;
     }

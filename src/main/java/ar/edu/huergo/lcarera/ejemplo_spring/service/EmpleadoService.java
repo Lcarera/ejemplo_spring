@@ -20,6 +20,22 @@ public class EmpleadoService {
         return ((List<Empleado>) this.empleadoRepository.findAll()).stream().map(empleado -> new EmpleadoDto(empleado.getId(), empleado.getNombre())).toList();
     }
 
+    //Ejemplo de como se haria antes un servicio sin usar un repositorio
+/*     public List<EmpleadoDto> getEmpleadosSinRepository() {
+        List<EmpleadoDto> empleados = new java.util.ArrayList<>();
+        Connection conn = DriverManager.getConnection("jdbc:h2:mem:test");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM empleado WHERE nombre = ?");
+        stmt.setString(1, "Lucho");
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()) {
+            Mapear manualmente cada campo... 😰
+            long id = rs.getLong("id");
+            String nombre = rs.getString("nombre");
+            empleados.add(new EmpleadoDto(id, nombre));
+        }
+        return empleados;
+    } */
+
     public Optional<Empleado> getEmpleado(Long id) {
         return this.empleadoRepository.findById(id);
     }
