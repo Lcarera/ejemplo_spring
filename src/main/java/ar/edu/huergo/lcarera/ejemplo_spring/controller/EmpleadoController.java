@@ -48,8 +48,15 @@ public class EmpleadoController {
         }
     }
 
-    @PutMapping("/{id}") //Indica que el metodo es un PUT en localhost:8080/empleado/1
-    public ResponseEntity<String> actualizarEmpleado(@PathVariable Long id, @RequestBody EmpleadoDto empleadoDto) {
+    @PutMapping({"/{id}", ""}) // Permite PUT en /empleado/1 y /empleado?id=1
+    public ResponseEntity<String> actualizarEmpleado(
+            @PathVariable(value = "id", required = false) Long pathId,
+            @RequestParam(value = "id", required = false) Long paramId,
+            @RequestBody EmpleadoDto empleadoDto) {
+        Long id = (pathId != null) ? pathId : paramId;
+        if (id == null) {
+            return ResponseEntity.badRequest().body("Debe proporcionar el id del empleado");
+        }
         try {
             this.empleadoService.actualizarEmpleado(id, empleadoDto);
             return ResponseEntity.ok("Empleado actualizado correctamente");
